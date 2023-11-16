@@ -7,7 +7,7 @@ const { check, validationResult } = require("express-validator");
 const path = require("path");
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 // Configura nodemailer
 const transporter = nodemailer.createTransport({
@@ -58,7 +58,7 @@ app.post(
     // Configura la información del correo
     const mailOptions = {
       from: email,
-      to: "mcristiansaid@gmail.com",
+      to: process.env.EMAIL_RRHH, // Correo del encargado de RRHH
       subject: subject,
       text: message,
       attachments: hasAttachment
@@ -256,5 +256,5 @@ app.post(
 
 // Inicia el servidor
 app.listen(PORT, () => {
-  console.log(`Servidor iniciado en http://localhost:${PORT}`);
+  console.log(`Servidor iniciado en el puerto ${PORT}`);
 });
