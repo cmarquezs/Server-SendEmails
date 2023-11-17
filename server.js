@@ -11,6 +11,7 @@ require("dotenv").config();
 // Inicializa la aplicación Express
 const app = express();
 const PORT = process.env.PORT || 3000;
+const cors = require('cors');
 
 // Configura nodemailer
 const transporter = nodemailer.createTransport({
@@ -38,7 +39,7 @@ const upload = multer({
 
 // Configura el directorio de archivos adjuntos
 app.use(express.static(path.join(__dirname, "uploads")));
-
+app.use(cors());
 // Configura el manejo de formularios
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -58,7 +59,8 @@ app.get("/",(req, res)=> {
 });
 
 
-app.post("/submit-form", upload.single("file"), (req, res) => {
+app.post("/form", upload.single("file"), (req, res) => {
+  
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
