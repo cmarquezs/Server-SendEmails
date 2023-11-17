@@ -144,7 +144,7 @@ app.post("/form-send", upload.single("file"), (req, res) => {
 
     console.log("Correo principal enviado: " + info.response);
 
-    // Configura la información del correo de respuesta al usuario
+    // Configura del cuerpo de correo de respuesta para el usuario
     const userMailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
