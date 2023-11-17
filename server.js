@@ -87,7 +87,6 @@ app.post("/form-send", upload.single("file"), (req, res) => {
                 background-color: #f4f4f4;
                 color: #333;
               }
-
               .email-container {
                 max-width: 600px;
                 margin: 0 auto;
@@ -96,15 +95,12 @@ app.post("/form-send", upload.single("file"), (req, res) => {
                 border-radius: 8px;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
               }
-
               h2 {
                 color: #007bff;
               }
-
               p {
                 line-height: 1.6;
               }
-
               li {
                 text-align: justify;
               }
@@ -112,10 +108,12 @@ app.post("/form-send", upload.single("file"), (req, res) => {
           </head>
           <body>
             <div class="email-container">
+              <div class="logo-container">
+                <img src="https://impulsarth.netlify.app/assets/logo.png" alt="Logo de la empresa" class="logo" />
+              </div>
               <h2>¡Nuevo Correo de Contacto!</h2>
               <p>¡Hola!</p>
               <p>Has recibido un nuevo correo de contacto con la siguiente información:</p>
-
               <ul>
                 <li><strong>Nombres:</strong> ${names}</li>
                 <li><strong>Apellidos:</strong> ${lastnames}</li>
@@ -123,13 +121,10 @@ app.post("/form-send", upload.single("file"), (req, res) => {
                 <li><strong>Celular:</strong> ${cellphone}</li>
                 <li><strong>Mensaje:</strong> ${message}</li>
               </ul>
-
               <p>Adjunto encontrarás la hoja de vida del remitente.</p>
-
               <div class="highlight">
                 <p>Por favor, ten en cuenta la hoja de vida adjunta al correo.</p>
               </div>
-
               <p>¡Gracias!</p>
             </div>
           </body>
