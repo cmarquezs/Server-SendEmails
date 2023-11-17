@@ -1,11 +1,14 @@
-require("dotenv").config();
-
+// Importa los módulos necesarios
 const express = require("express");
 const nodemailer = require("nodemailer");
 const multer = require("multer");
 const { check, validationResult } = require("express-validator");
 const path = require("path");
 
+// Configura la carga de variables de entorno
+require("dotenv").config();
+
+// Inicializa la aplicación Express
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -22,9 +25,7 @@ const transporter = nodemailer.createTransport({
 const upload = multer({
   storage: multer.memoryStorage(),
   fileFilter: (req, file, cb) => {
-    if (
-      file.mimetype.startsWith("application/pdf")
-    ) {
+    if (file.mimetype.startsWith("application/pdf")) {
       cb(null, true);
     } else {
       cb(new Error("Tipo de archivo no permitido"), false);
@@ -43,33 +44,43 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Ruta para procesar el formulario
-app.post(
-  "/submit-form",
-  upload.single("file"),
-  (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+app.get("/",(req, res)=> {
+  const htmlResponse = `
+    <html>
+      <head>
+        <title> NodeJS y Express</title>
+      </head>
+      <body>
+        <h1>Servidor Corriendo </h1>
+      </body>
+    </html>
+  `;
+});
 
-    const { names, lastnames, email, cellphone, subject, message } = req.body;
-    const hasAttachment = req.file !== undefined;
 
-    // Configura la información del correo
-    const mailOptions = {
-      from: email,
-      to: process.env.EMAIL_RRHH, // Correo del encargado de RRHH
-      subject: subject,
-      text: message,
-      attachments: hasAttachment
-        ? [
+app.post("/submit-form", upload.single("file"), (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const { names, lastnames, email, cellphone, subject, message } = req.body;
+  const hasAttachment = req.file !== undefined;
+
+  // Configura la información del correo principal
+  const mailOptions = {
+    from: email,
+    to: process.env.EMAIL_RRHH,
+    subject: subject,
+    text: message,
+    attachments: hasAttachment
+      ? [
           {
             filename: req.file.originalname,
             content: req.file.buffer,
           },
         ]
-        : [],
-      subject: subject,
+      : [],
       html: `
         <!DOCTYPE html>
         <html lang="en">
@@ -131,22 +142,23 @@ app.post(
           </body>
         </html>
       `,
-    };
+  };
 
-    // Envía el correo
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-        res.status(500).send("Error al enviar el formulario.");
-      } else {
-        console.log("Correo enviado: " + info.response);
+  // Envía el correo principal
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+      return res.status(500).send("Error al enviar el formulario.");
+    }
 
-        // Enviar correo de respuesta al usuario
-        const userMailOptions = {
-          from: process.env.EMAIL_USER,
-          to: email,
-          subject: 'Formulario Recibido Exitosamente',
-          html: `
+    console.log("Correo principal enviado: " + info.response);
+
+    // Configura la información del correo de respuesta al usuario
+    const userMailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Formulario Recibido Exitosamente',
+      html: `
         <!DOCTYPE html>
         <html lang="en">
           <head>
@@ -234,25 +246,22 @@ app.post(
             </div>
           </body>
         </html>
-      `,
-        };
+      `,  
+    };
 
-        transporter.sendMail(userMailOptions, function (userError, userInfo) {
-          if (userError) {
-            console.log(userError);
-            res.status(500).send("Error al enviar el correo de respuesta al usuario.");
-          } else {
-            console.log("Correo de respuesta enviado al usuario: " + userInfo.response);
-            // Redirige o envía una respuesta al cliente
-            res.redirect("https://impulsarth.netlify.app/contactenos.html");
-          }
-        });
-
+    // Envía el correo de respuesta al usuario
+    transporter.sendMail(userMailOptions, function (userError, userInfo) {
+      if (userError) {
+        console.log(userError);
+        return res.status(500).send("Error al enviar el correo de respuesta al usuario.");
       }
-    });
 
-  }
-);
+      console.log("Correo de respuesta enviado al usuario: " + userInfo.response);
+      // Redirige o envía una respuesta al cliente
+      res.redirect("https://impulsarth.netlify.app/contactenos.html");
+    });
+  });
+});
 
 // Inicia el servidor
 app.listen(PORT, () => {
