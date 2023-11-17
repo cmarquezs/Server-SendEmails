@@ -7,10 +7,9 @@
       }
     ],
     "routes": [
-      { "src": "/form", "dest": "/form" },
-      { "src": "/form-send", "dest": "/form-send" },
-      { "src": "/api/(.*)", "dest": "/$1" },
-      { "src": "/(.*)", "dest": "/index.html" }
+        {"src": "/form", "dest": "/form"},
+        {"src": "/form-send", "dest": "/form-send"}, 
+        {"src": "/(.*)", "dest": "/index.html"} 
     ]
   }
   
