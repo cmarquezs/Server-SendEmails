@@ -101,10 +101,7 @@ app.post("/form-send", upload.single("file"), (req, res) => {
                 p {
                   line-height: 1.6;
                 }
-                
-                li {
-                  text-align: justify;
-                }
+                 
                 .highlight {
                   background-color: #ffeeba;
                   padding: 5px;
