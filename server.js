@@ -44,23 +44,14 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Ruta para procesar el formulario
-app.get("/",(req, res)=> {
-  const htmlResponse = `
-    <html>
-      <head>
-        <title> NodeJS y Express</title>
-      </head>
-      <body>
-        <h1>Servidor Corriendo </h1>
-      </body>
-    </html>
-  `;
+// Ruta para mostrar información en formato JSON al cargar http://localhost:3000/form
+app.get("/form", (req, res) => {
+  res.json({ message: "Servidor corriendo" });
 });
 
-
-app.post("/form", upload.single("file"), (req, res) => {
-  
+// Ruta para procesar el formulario
+app.post("/form-send", upload.single("file"), (req, res) => {
+  //res.json({ message: "Servidor POST corriendo" });
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -268,4 +259,5 @@ app.post("/form", upload.single("file"), (req, res) => {
 // Inicia el servidor
 app.listen(PORT, () => {
   console.log(`Servidor iniciado en el puerto ${PORT}`);
+  console.log(`Accede a tu aplicación en http://localhost:${PORT}`);
 });
