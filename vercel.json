@@ -1,15 +1,23 @@
 {
-    "version": 2,
     "builds": [
       {
-        "src": "server.js",
+        "src": "server.js", 
         "use": "@vercel/node"
       }
     ],
     "routes": [
-        {"src": "/form", "dest": "/form"},
-        {"src": "/form-send", "dest": "/form-send"}, 
-        {"src": "/(.*)", "dest": "/index.html"} 
+      {
+        "src": "/form-send",
+        "methods": ["POST"],
+        "dest": "/server.js"
+      },
+      {
+        "handle": "filesystem"
+      },
+      {
+        "src": "/.*",
+        "dest": "/server.js"
+      }
     ]
   }
   
