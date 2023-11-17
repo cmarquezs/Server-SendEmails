@@ -45,7 +45,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Ruta para mostrar información en formato JSON al cargar http://localhost:3000/form
-app.get("/form", (req, res) => {
+app.get("/", (req, res) => {
   res.json({ message: "Servidor corriendo" });
 });
 
