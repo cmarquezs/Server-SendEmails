@@ -81,29 +81,35 @@ app.post("/form-send", upload.single("file"), (req, res) => {
             <meta charset="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-            <style>
-              body {
-                font-family: 'Arial', sans-serif;
-                background-color: #f4f4f4;
-                color: #333;
-              }
-              .email-container {
-                max-width: 600px;
-                margin: 0 auto;
-                padding: 20px;
-                background-color: #fff;
-                border-radius: 8px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-              }
-              h2 {
-                color: #007bff;
-              }
-              p {
-                line-height: 1.6;
-              }
-              li {
-                text-align: justify;
-              }
+              <style>
+                body {
+                  font-family: 'Arial', sans-serif;
+                  background-color: #f4f4f4;
+                  color: #333;
+                }
+                .email-container {
+                  max-width: 600px;
+                  margin: 0 auto;
+                  padding: 20px;
+                  background-color: #fff;
+                  border-radius: 8px;
+                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+                h2 {
+                  color: #007bff;
+                }
+                p {
+                  line-height: 1.6;
+                }
+                
+                li {
+                  text-align: justify;
+                }
+                .highlight {
+                  background-color: #ffeeba;
+                  padding: 5px;
+                  border-radius: 4px;
+                }
             </style>
           </head>
           <body>
